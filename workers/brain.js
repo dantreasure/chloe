@@ -9,8 +9,8 @@ function inbox(number, message, response){
 			if(student !== null){
 				console.log("We looked up the student " + student)
 				student.messages.push(message)
-				student.save(function(err){console.log("Message saved")});
-				reply(student, response, message);
+				student.save(function(err){reply(student, response, message);});
+				
 			} else {
 				console.log("We couldn't find an account for " + number);
 				createStudent(number, response)
@@ -22,9 +22,11 @@ function inbox(number, message, response){
 function reply(student, response, message){
 	if (student.messages.length === 1){
 		respond("Nice to meet you " + message, response);
+		student.name = message;
+		student.save(function(err){console.log("Name saved")})
 	}
-	if (student.messages.length === 2){
-		respond("Sorry but Dan was feeling sleepy and didn't code any further responses. Come back again soon!", response);
+	if (student.messages.length >= 2){
+		respond("Sorry but Dan was feeling sleepy and didn't code any further responses. Come back again soon " + student.name + '!', response);
 	}
 }
 
