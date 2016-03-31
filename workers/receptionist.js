@@ -1,10 +1,8 @@
-var respond = require('../utils/respond');
+var brain = require('./brain');
 
 exports.webhook = function(request, response){
 	var phoneNumber = request.body.From;
 	var msg = request.body.Body;
 
-	console.log(phoneNumber);
-
-	respond("HErrrro to you too.", response);
+	brain.inbox(phoneNumber, msg, response);
 }
