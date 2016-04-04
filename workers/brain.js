@@ -26,13 +26,11 @@ function reply(student, response, message){
 				respond("You have been reset " + student.name + '.', response);
 			}
 		})
-	}
-	if (student.messages.length === 1){
+	} else if (student.messages.length === 1){
 		respond("Nice to meet you " + message, response);
 		student.name = message;
 		student.save(function(err){console.log("Name saved")})
-	}
-	if (student.messages.length >= 2){
+	} else if (student.messages.length >= 2){
 		respond("Sorry but Dan was feeling sleepy and didn't code any further responses. Come back again soon " + student.name + '!', response);
 	}
 }
