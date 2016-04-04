@@ -20,6 +20,13 @@ function inbox(number, message, response){
 }
 
 function reply(student, response, message){
+	if(message === '/reset'){
+		Student.remove({_id: student['_id']}, function(err){
+			if(!err){
+				respond("You have been reset " + student.name + '.', response);
+			}
+		})
+	}
 	if (student.messages.length === 1){
 		respond("Nice to meet you " + message, response);
 		student.name = message;
