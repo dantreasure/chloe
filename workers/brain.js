@@ -3,7 +3,7 @@ var convoTree = require('../utils/convoTree.js');
 var respond = require('../utils/respond');
 
 function inbox(number, message, response){
-	Student.findOne({'phone_number': number}, 'name phone_number messages convoState', function(err, student){
+	Student.findOne({'phone_number': number}, 'name phone_number messages convoState logs', function(err, student){
 		if (err){
 			console.error(err)
 		} else {

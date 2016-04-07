@@ -14,11 +14,8 @@ function advanceConversation(student, state){
 module.exports = function(student, message, response){	
 	switch(student.convoState){
 		case 'intro1':
-			console.log('Incoming intro1');
-			var reply = '';
 			student.name =message;
 			student.save(function(err){
-				console.log('student.save finished')
 				if (err){
 					respond("Sorry could you send that one more time?", response)
 				} else {
@@ -28,7 +25,6 @@ module.exports = function(student, message, response){
 			});
 			break;
 		case 'intro2':
-			console.log('Incoming intro2');
 			respond("Great, and when would you like me to ask how your practice went?" , response);
 			advanceConversation(student, 'intro3');
 			break;
@@ -37,10 +33,57 @@ module.exports = function(student, message, response){
 			advanceConversation(student, 'regular1');
 			break;
 		case 'regular1':
-			if(message.indexOf('log') !== -1){
+			if(message.indexOf('log') !== -1 || message.indexOf('Log') !== -1){
 				respond("Booyah-kasha! How'd your practice go?", response);
+				advanceConversation(student, 'log1')
 			} else {
 				respond("How can I help you?", response);
 			}
+			break;
+		case 'log1':
+			student.logs.push({_owner: student._id, synopsis: message});
+			student.save(function(err){
+				if(!err){
+					respond("Did you have an intent?", response);
+					advanceConversation(student, 'log2')
+				}	
+			})
+			break;
+		case 'log2':
+			if(message === 'yes' || message === 'Yes' || message === 'ja'){
+				respond("What was it?", response);
+				advanceConversation(student, 'log3');
+			} else {
+				respond("Did you notice any improvements?", response);
+				advanceConversation(student, 'log4');
+			}
+			break;
+		case 'log3':
+			student.logs[0].intent = message;
+			student.save(function(err){
+				if(!err){
+					respond("Solid. Did you notice any improvements?", response);
+					advanceConversation(student, 'log4');		
+				}
+			})
+			break;
+		case 'log4':
+			if(message === 'yes' || message === 'Yes' || message === 'ja'){
+				respond("What was it?", response);
+				advanceConversation(student, 'log5');
+			} else {
+				respond("Any goals for the future?", response);
+				advanceConversation(student, 'log6');
+			}
+			break;
+		case 'log5':
+			student.logs[0].improvements = message;
+			student.save(function(err){
+				if(!err){
+					respond("Any goals for the future?", response);
+					advanceConversation(student, 'log6');		
+				}
+			})
+			break;
 	}
 }
