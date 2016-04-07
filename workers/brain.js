@@ -1,15 +1,18 @@
-var respond = require('../utils/respond');
 var Student = require('../models/student.js');
+var convoTree = require('../utils/convoTree.js');
+var respond = require('../utils/respond');
 
 function inbox(number, message, response){
-	Student.findOne({'phone_number': number}, 'name phone_number messages', function(err, student){
+	Student.findOne({'phone_number': number}, 'name phone_number messages convoState', function(err, student){
 		if (err){
 			console.error(err)
 		} else {
 			if(student !== null){
 				console.log("We looked up the student " + student)
 				student.messages.push(message)
-				student.save(function(err){reply(student, response, message);});
+				student.save(function(err){
+					reply(student, response, message);
+				});
 				
 			} else {
 				console.log("We couldn't find an account for " + number);
@@ -23,16 +26,13 @@ function reply(student, response, message){
 	if(message === '/reset'){
 		Student.remove({_id: student['_id']}, function(err){
 			if(!err){
-				respond("You have been reset " + student.name + '.', response);
+				respond("You have been reset.", response);
 			}
 		})
-	} else if (student.messages.length === 1){
-		respond("Nice to meet you " + message, response);
-		student.name = message;
-		student.save(function(err){console.log("Name saved")})
-	} else if (student.messages.length >= 2){
-		respond("Sorry but Dan was feeling sleepy and didn't code any further responses. Come back again soon " + student.name + '!', response);
+	} else {
+		convoTree(student, message, response);
 	}
+	
 }
 
 function createStudent(number, response){
