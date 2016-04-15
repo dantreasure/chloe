@@ -2,6 +2,7 @@ var Student = require('../models/student.js');
 var respond = require('../utils/respond');
 var scheduleParser = require('../utils/scheduleParser');
 var reminderParser = require('../utils/reminderParser');
+var checkStudents = require('../utils/checkStudents');
 
 function advanceConversation(student, state){
 	student.convoState = state;
@@ -42,6 +43,7 @@ module.exports = function(student, message, response){
 				advanceConversation(student, 'log1')
 			} else {
 				respond("How can I help you?", response);
+				checkStudents();
 			}
 			break;
 		case 'log1':
@@ -109,8 +111,3 @@ module.exports = function(student, message, response){
 			break;
 	}
 }
-
-
-
-
-

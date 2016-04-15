@@ -1,0 +1,30 @@
+#!/usr/bin/env node
+
+var Student = require('../models/student.js');
+var respond = require('../utils/respond');
+
+var dayKey = {
+	'sunday': 0,
+	'monday': 1,
+	'tuesday': 2,
+	'wednesday': 3,
+	'thursday': 4,
+	'friday': 5,
+	'saturday': 6
+};
+
+var today = new Date();
+
+var todaysDay = today.getDay();
+
+var studentsToNotify = [];
+
+for (var day in dayKey){
+	if(dayKey[day] === todaysDay){
+		var qry = 'student.' + day;
+		Student.findOne({ : true }, 'name occupation', function (err, person) {
+		  if (err) return handleError(err);
+		  console.log('%s %s is a %s.', person.name.first, person.name.last, person.occupation) // Space Ghost is a talk show host.
+		})
+	}
+}
