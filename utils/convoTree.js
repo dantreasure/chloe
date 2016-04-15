@@ -1,5 +1,7 @@
 var Student = require('../models/student.js');
 var respond = require('../utils/respond');
+var scheduleParser = require('../utils/scheduleParser');
+var reminderParser = require('../utils/reminderParser');
 
 function advanceConversation(student, state){
 	student.convoState = state;
@@ -14,7 +16,7 @@ function advanceConversation(student, state){
 module.exports = function(student, message, response){	
 	switch(student.convoState){
 		case 'intro1':
-			student.name =message;
+			student.name = message;
 			student.save(function(err){
 				if (err){
 					respond("Sorry could you send that one more time?", response)
@@ -25,11 +27,13 @@ module.exports = function(student, message, response){
 			});
 			break;
 		case 'intro2':
-			respond("Great, and when would you like me to ask how your practice went?" , response);
+			scheduleParser(student, message);
+			respond("Great, and when would you like me to ask how your practice went? I can ask on the hour any hour\ne.g. 4pm, 8am, 12pm etc." , response);
 			advanceConversation(student, 'intro3');
 			break;
 		case 'intro3':
-			respond("Awesome! I'll check in with you then. You can always tell me you'd like to log* whenever you'd like", response)
+			reminderParser(student, message);
+			respond("Awesome! I'll check in with you then. You can always tell me you'd like to log whenever you'd like. Have a great day!", response)
 			advanceConversation(student, 'regular1');
 			break;
 		case 'regular1':
@@ -41,7 +45,7 @@ module.exports = function(student, message, response){
 			}
 			break;
 		case 'log1':
-			student.logs.push({_owner: student._id, synopsis: message});
+			student.logs.unshift({_owner: student._id, synopsis: message});
 			student.save(function(err){
 				if(!err){
 					respond("Did you have an intent?", response);
@@ -49,7 +53,7 @@ module.exports = function(student, message, response){
 				}	
 			})
 			break;
-		case 'log2':
+		case 'log2':		
 			if(message === 'yes' || message === 'Yes' || message === 'ja'){
 				respond("What was it?", response);
 				advanceConversation(student, 'log3');
@@ -85,5 +89,28 @@ module.exports = function(student, message, response){
 				}
 			})
 			break;
+		case 'log6':
+			if(message === 'yes' || message === 'Yes' || message === 'ja'){
+				respond("What are they?", response);
+				advanceConversation(student, 'log7')
+			} else if (message === 'no' || message === 'No'){
+				respond("Gotcha. That's a wrap! Talk to you later ;)", response);
+				advanceConversation(student, 'regular1');
+			}
+			break;
+		case 'log7':
+			student.logs[0].future_goals = message;
+			student.save(function(err){
+				if(!err){
+					respond("Gotcha. That's a wrap! Talk to you later ;)", response);
+					advanceConversation(student, 'regular1');
+				}
+			})
+			break;
 	}
 }
+
+
+
+
+

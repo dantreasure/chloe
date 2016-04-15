@@ -1,5 +1,15 @@
 var mongoose = require('mongoose');
 
+var blankSchedule = {
+	"monday": false,
+	"tuesay": false,
+	"wednesday": false,
+	"thursday": false,
+	"friday": false,
+	"saturday": false,
+	"sunday": false
+};
+
 var logSchema = mongoose.Schema({
 	date: { type: Date, default: Date.now },
 	intent: String,
@@ -13,6 +23,8 @@ var studentSchema = mongoose.Schema({
 	name: String,
 	phone_number: String,
 	messages: Array,
+	schedule: {type: Object, default: blankSchedule},
+	reminderTime: String,
  	convoState: { type: String, default: 'intro1' },
  	logs: [logSchema]
 });

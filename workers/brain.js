@@ -3,12 +3,11 @@ var convoTree = require('../utils/convoTree.js');
 var respond = require('../utils/respond');
 
 function inbox(number, message, response){
-	Student.findOne({'phone_number': number}, 'name phone_number messages convoState logs', function(err, student){
+	Student.findOne({'phone_number': number}, 'name phone_number messages convoState logs schedule', function(err, student){
 		if (err){
 			console.error(err)
 		} else {
 			if(student !== null){
-				console.log("We looked up the student " + student)
 				student.messages.push(message)
 				student.save(function(err){
 					reply(student, response, message);
