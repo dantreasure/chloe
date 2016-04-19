@@ -1,7 +1,7 @@
 var Student = require('../models/student.js');
 
 var mondays = ['Monday', 'monday'];
-var tuesdays = ['Tueday', 'tuesday', 'teusday'];
+var tuesdays = ['Tuesday', 'tuesday', 'teusday'];
 var wednesdays = ['Wednesday', 'wednesday', 'wendsday', 'wendsy'];
 var thursdays = ['Thursday', 'thursday', 'tursday', 'Tursday', 'Thursdy', 'thursdy'];
 var fridays = ['Friday', 'friday', 'fri', 'Fri','fridy', 'Fridy'];
