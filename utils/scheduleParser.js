@@ -12,7 +12,7 @@ var week = [mondays, tuesdays, wednesdays, thursdays, fridays, saturdays, sunday
 
 var schedule = {
 	"monday": false,
-	"tuesay": false,
+	"tuesday": false,
 	"wednesday": false,
 	"thursday": false,
 	"friday": false,
