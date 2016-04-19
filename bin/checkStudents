@@ -20,6 +20,8 @@ var todaysDay = today.getDay();
 
 var studentsToNotify = [];
 
+console.log("\n==========\ncheckStudents running");
+
 var checkStudents = function(){
 	var qry;
 	for (var day in dayKey){
