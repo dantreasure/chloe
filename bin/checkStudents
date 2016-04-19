@@ -30,7 +30,9 @@ var checkStudents = function(){
 	var query = JSON.parse('{"'+qry+'":true}');
 	Student.find(query, 'name reminderTime phone_number convoState', function (err, students) {
 		if (err) return handleError(err);
+		console.log(err)
 		console.log(students)
+		console.log("this is inside Student.find")
 		students.forEach(function(student){
 			if (student.reminderTime == today.getHours()){
 				var msg = "Hey " + student.name + ", were you able to practice yoga today?"
