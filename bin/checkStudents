@@ -20,8 +20,6 @@ var todaysDay = today.getDay();
 
 var studentsToNotify = [];
 
-console.log("\n==========\ncheckStudents running");
-
 var checkStudents = function(){
 	var qry;
 	for (var day in dayKey){
@@ -32,6 +30,7 @@ var checkStudents = function(){
 	var query = JSON.parse('{"'+qry+'":true}');
 	Student.find(query, 'name reminderTime phone_number convoState', function (err, students) {
 		if (err) return handleError(err);
+		console.log(students)
 		students.forEach(function(student){
 			if (student.reminderTime == today.getHours()){
 				var msg = "Hey " + student.name + ", were you able to practice yoga today?"
