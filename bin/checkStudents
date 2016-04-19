@@ -17,14 +17,14 @@ var dayKey = {
 var today = new Date();
 
 var todaysDay = today.getDay();
-
+console.log(today.getHours());
 var studentsToNotify = [];
-
 var checkStudents = function(){
 	var qry;
 	for (var day in dayKey){
 		if(dayKey[day] === todaysDay){
 			qry = 'schedule.' + day;
+			console.log(qry);
 		}
 	}
 	var query = JSON.parse('{"'+qry+'":true}');
