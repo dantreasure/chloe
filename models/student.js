@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var blankSchedule = {
 	"monday": false,
-	"tuesay": false,
+	"tuesday": false,
 	"wednesday": false,
 	"thursday": false,
 	"friday": false,
