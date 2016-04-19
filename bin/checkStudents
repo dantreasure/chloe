@@ -22,9 +22,11 @@ var studentsToNotify = [];
 var checkStudents = function(){
 	var qry;
 	for (var day in dayKey){
+		console.log('ping')
 		if(dayKey[day] === todaysDay){
 			qry = 'schedule.' + day;
 			console.log(qry);
+			break;
 		}
 	}
 	var query = JSON.parse('{"'+qry+'":true}');
