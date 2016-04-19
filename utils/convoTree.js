@@ -3,16 +3,7 @@ var respond = require('../utils/respond');
 var scheduleParser = require('../utils/scheduleParser');
 var reminderParser = require('../utils/reminderParser');
 var checkStudents = require('../utils/checkStudents');
-
-function advanceConversation(student, state){
-	student.convoState = state;
-	student.save(function(err){
-		if(err){
-			console.log("There was an error updating the student " + student.name + "'s state:\n");
-			console.log(err);
-		}
-	});		
-}
+var advanceConversation = require('../utils/advanceConversation');
 
 module.exports = function(student, message, response){	
 	switch(student.convoState){
@@ -43,7 +34,15 @@ module.exports = function(student, message, response){
 				advanceConversation(student, 'log1')
 			} else {
 				respond("How can I help you?", response);
-				checkStudents();
+			}
+			break;
+		case 'log0':
+			if(message === 'yes' || message === 'Yes' || message === 'ja'){
+				respond("Woot! How'd it go?", response);
+				advanceConversation(student, 'log1');
+			} else {
+				respond("Gotcha!", response);
+				advanceConversation(student, 'regular1');
 			}
 			break;
 		case 'log1':
@@ -95,7 +94,7 @@ module.exports = function(student, message, response){
 			if(message === 'yes' || message === 'Yes' || message === 'ja'){
 				respond("What are they?", response);
 				advanceConversation(student, 'log7')
-			} else if (message === 'no' || message === 'No'){
+			} else {
 				respond("Gotcha. That's a wrap! Talk to you later ;)", response);
 				advanceConversation(student, 'regular1');
 			}
