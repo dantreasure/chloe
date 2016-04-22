@@ -29,20 +29,17 @@ var checkStudents = function(){
 			break;
 		}
 	}
-	var query = JSON.parse('{"'+qry+'":true}');
+	var query = JSON.parse('{"'+qry+'":true, "reminderTime":"'+today.getHours()+'"}');
 	Student.find(query, 'name reminderTime phone_number convoState', function (err, students) {
 		if (err) return handleError(err);
-		console.log(err)
+
 		console.log(students)
 		console.log("this is inside Student.find")
 		students.forEach(function(student){
-			if (student.reminderTime == today.getHours()){
-				var msg = "Hey " + student.name + ", were you able to practice yoga today?"
-				sendMessage(msg, student.phone_number);
-				advanceConversation(student, "log0");
-			}	
+			var msg = "Hey " + student.name + ", were you able to practice yoga today?"
+			sendMessage(msg, student.phone_number);
+			advanceConversation(student, "log0");
 		})
-		
 	})
 }
 

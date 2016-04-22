@@ -35,6 +35,7 @@ module.exports = function(student, message, response){
 			} else {
 				respond("How can I help you?", response);
 			}
+			checkStudents()
 			break;
 		case 'log0':
 			if(message === 'yes' || message === 'Yes' || message === 'ja'){

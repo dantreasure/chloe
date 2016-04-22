@@ -16,27 +16,28 @@ var dayKey = {
 var today = new Date();
 
 var todaysDay = today.getDay();
-
 var studentsToNotify = [];
-
 var checkStudents = function(){
 	var qry;
 	for (var day in dayKey){
+		console.log('ping')
 		if(dayKey[day] === todaysDay){
 			qry = 'schedule.' + day;
+			console.log(qry);
+			break;
 		}
 	}
-	var query = JSON.parse('{"'+qry+'":true}');
+	var query = JSON.parse('{"'+qry+'":true, "reminderTime":"'+today.getHours()+'"}');
 	Student.find(query, 'name reminderTime phone_number convoState', function (err, students) {
 		if (err) return handleError(err);
+
+		console.log(students)
+		console.log("this is inside Student.find")
 		students.forEach(function(student){
-			if (student.reminderTime == today.getHours()){
-				var msg = "Hey " + student.name + ", were you able to practice yoga today?"
-				sendMessage(msg, student.phone_number);
-				advanceConversation(student, "log0");
-			}	
+			var msg = "Hey " + student.name + ", were you able to practice yoga today?"
+			sendMessage(msg, student.phone_number);
+			advanceConversation(student, "log0");
 		})
-		
 	})
 }
 
