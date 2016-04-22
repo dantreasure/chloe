@@ -2,6 +2,7 @@ var Student = require('../models/student.js');
 var respond = require('../utils/respond');
 var sendMessage = require('../utils/sendMessage');
 var advanceConversation = require('../utils/advanceConversation');
+var lookup = require('../utils/lookup');
 
 var dayKey = {
 	'sunday': 0,
@@ -20,14 +21,15 @@ var studentsToNotify = [];
 var checkStudents = function(){
 	var qry;
 	for (var day in dayKey){
-		console.log('ping')
 		if(dayKey[day] === todaysDay){
 			qry = 'schedule.' + day;
-			console.log(qry);
 			break;
 		}
 	}
 	var query = JSON.parse('{"'+qry+'":true, "reminderTime":"'+today.getHours()+'"}');
+	console.log('calling lookup');
+	lookup(query);
+	
 	Student.find(query, 'name reminderTime phone_number convoState', function (err, students) {
 		if (err) return handleError(err);
 
