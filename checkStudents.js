@@ -1,8 +1,8 @@
-var Student = require('/models/student.js');
-var respond = require('/utils/respond');
-var sendMessage = require('/utils/sendMessage');
-var advanceConversation = require('/utils/advanceConversation');
-var lookup = require('/utils/lookup');
+var Student = require('./models/student.js');
+var respond = require('./utils/respond');
+var sendMessage = require('./utils/sendMessage');
+var advanceConversation = require('./utils/advanceConversation');
+var lookup = require('./utils/lookup');
 
 var dayKey = {
 	'sunday': 0,
